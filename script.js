@@ -3,8 +3,9 @@ const app = express()
 const ejs = require("ejs")
 const bcrypt = require("bcrypt")
 const validator = require("express-validator")
+const cookieParser = require("cookie-parser")
 
-
+app.use(cookieParser())
 app.use(express.static('static'))
 app.set('view engine', 'ejs')
 
@@ -25,10 +26,11 @@ dbClient.connect((err) => {
 // login page
 
 app.get('/login', (req, res) => {
+    if (req.cookies.username) {
+        return res.redirect('/profile')
+    }
     res.render('login')
 })
-
-
 
 // singup
 
@@ -53,6 +55,7 @@ app.post('/singup', async(req, res) => {
 // login
 
 app.post('/login', async(req, res) => {
+
     const database = dbClient.db('second')
     let d = req.body
     console.log(d)
@@ -63,7 +66,12 @@ app.post('/login', async(req, res) => {
     console.log(user)
     let val = await bcrypt.compare(d.password, user.password)
     if (val) {
-        res.redirect('/profile/' + user.id)
+        let options = {
+            maxAge: 1000 * 60 * 5, // would expire after 5 minutes
+            httpOnly: false, // The cookie only accessible by the web server
+        }
+        res.cookie('username', user.username, options)
+        res.redirect('/profile')
     } else {
         res.redirect('/login')
     }
@@ -71,12 +79,23 @@ app.post('/login', async(req, res) => {
 
 // profile
 
-app.get('/profile/:id', async(req, res) => {
+app.get('/profile', async(req, res) => {
     const database = dbClient.db('second')
-    console.log(req.params.id)
-    let user = await database.collection('collection2').findOne({ id: req.params.id })
+    let username = req.cookies.username
+    if (!username) {
+        return res.redirect('/login')
+    }
+    let user = await database.collection('collection2').findOne({ username: username })
     console.log(user)
     res.render('profile', { user })
+})
+
+//logout
+
+app.get('/logout', (req, res) => {
+    const database = dbClient.db('second')
+    res.clearCookie('username');
+    res.redirect('/login');
 })
 
 
