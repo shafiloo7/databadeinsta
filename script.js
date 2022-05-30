@@ -67,7 +67,7 @@ app.post('/login', async(req, res) => {
     let val = await bcrypt.compare(d.password, user.password)
     if (val) {
         let options = {
-            maxAge: 1000 * 60 * 5, // would expire after 5 minutes
+            maxAge: 1000 * 60 * 10, // would expire after 5 minutes
             httpOnly: false, // The cookie only accessible by the web server
         }
         res.cookie('username', user.username, options)
@@ -98,5 +98,14 @@ app.get('/logout', (req, res) => {
     res.redirect('/login');
 })
 
+// profile show
+
+app.get('/search', async(req, res) => {
+    const database = dbClient.db('second')
+    let username = req.query.username
+    let data = await database.collection('collection2').findOne({ username: username })
+    console.log(data)
+    res.render("pro", { data })
+})
 
 app.listen(5555)

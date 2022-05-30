@@ -21,8 +21,8 @@
                 </div>
 
                 <div class="col-12 col-sm-4 col-md-4">
-                    <form action="/search" method="get">
-                        <input type="text" name="username" class="search" placeholder="search">
+                    <form actio="" method="">
+                        <input type="text" class="search" placeholder="search">
                     </form>
                 </div>
                 <div class="col-12 col-sm-2 col-md-2 mt-3">
@@ -39,19 +39,19 @@
             <div class="container">
                 <div class="row ">
                     <div class="col-12 col-md-3 mt-5 offset-2 ">
-                        <img src="/<%=user.pic%>" class="img-p">
+                        <img src="/<%=data.pic%>" class="img-p">
                     </div>
                     <div class="col-12 col-md-6 mt-5">
-                        <span> <%=user.fullname%></span>&nbsp;&nbsp;
+                        <span> <%= data.fullname %> </span>&nbsp;&nbsp;
                         <span><a href="/edit"><button type="button" class="btn btn-light">Edit profile</button></a></span>&nbsp;&nbsp;
                         <span><i class="fas fa-cog"></i></span>
-                        <p><span>17 post</span>&nbsp;&nbsp;&nbsp;<span><%=user.followers%></span>&nbsp;&nbsp;&nbsp;<span><%=user.following%></span></p>
+                        <p><span>17 post</span>&nbsp;&nbsp;&nbsp;<span><%=data.followers%></span>&nbsp;&nbsp;&nbsp;<span><%=data.following%></span></p>
                         <p></p>
                         <p>
-                            <%=user.username%>
+                            <%=data.username%>
                         </p>
                         <p>
-                            <%=user.bio%>
+                            <%=data.bio%>
                         </p>
 
                     </div>
@@ -81,8 +81,8 @@
             <div class="container">
                 <div class="row">
 
-                    <div onclick="myFunction('/<%=user.img%>')" class="col-4 col-md-4 col-sm-4">
-                        <img src="/<%=user.img%>" class="img4">
+                    <div onclick="myFunction('/<%=data.img%>')" class="col-4 col-md-4 col-sm-4">
+                        <img src="/<%=data.img%>" class="img4">
                     </div>
 
                 </div>
